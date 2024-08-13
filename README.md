@@ -50,7 +50,7 @@ This project is a web application for managing driver assignments to vehicles. I
 
 Level 0 - https://drive.google.com/file/d/15-heQzK37nL6aiG6RQ64TnVwFA0aqhf_/view?usp=sharing
 
-Level 1 - https://drive.google.com/file/d/15-heQzK37nL6aiG6RQ64TnVwFA0aqhf_/view?usp=sharing
+Level 1 - https://drive.google.com/file/d/1cmvoZSBh9TIbn5EI2SOVVAqu-Ftt17EG/view?usp=sharing
 
 Level 2 - https://drive.google.com/file/d/1zKXoIXFBubY9VtEV6Fq3lMtv93L7iO1e/view?usp=sharing
 
