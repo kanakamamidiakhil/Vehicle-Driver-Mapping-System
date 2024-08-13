@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Search Driver Assignments</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="type">Search by:</label>
+        <select id="type" name="type" required>
+            <option value="name">Name</option>
+            <option value="phone">Phone</option>
+        </select>
+        <br>
+        <label for="type">Status:</label>
+        <select id="request_status" name="request_status" required>
+            <option value="SENT">SENT</option>
+            <option value="ACCEPTED">ACCEPTED</option>
+            <option value="REJECTED">REJECTED</option>
+        </select>
+        <br>
+        <label for="search_term">Enter Value:</label>
+        <input type="text" id="search_term" name="search_term" required>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if assignments %}
+        <h2>Assignments</h2>
+        <table style="border: 1px solid black; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid black;">Driver's Name</th>
+                    <th style="border: 1px solid black;">Driver's Phone</th>
+                    <th style="border: 1px solid black;">Vehicle</th>
+                    <th style="border: 1px solid black;">Start Time</th>
+                    <th style="border: 1px solid black;">End Time</th>
+                    <th style="border: 1px solid black;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assignment in assignments %}
+                <tr>
+                    <td style="border: 1px solid black;">{{ assignment.driver.name }}</td>
+                    <td style="border: 1px solid black;">{{ assignment.driver.phone }}</td>
+                    <td style="border: 1px solid black;">{{ assignment.vehicle.make_model }}</td>
+                    <td style="border: 1px solid black;">{{ assignment.start_time }}</td>
+                    <td style="border: 1px solid black;">{{ assignment.end_time }}</td>
+                    <td style="border: 1px solid black;">{{ assignment.assignment_request_status }}</td>
+                    <td style="border: 1px solid black;">
+                        <form method="post" action="{% url 'unassign_vehicle' assignment.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="{{ request.POST.type }}">
+                            <input type="hidden" name="search_term" value="{{ request.POST.search_term }}">
+                            <input type="hidden" name="request_status" value="{{ request.POST.request_status }}">
+                            <button type="submit">Unassign</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

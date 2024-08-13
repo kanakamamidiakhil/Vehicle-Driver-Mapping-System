@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Find Nearby Drivers</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="x">X Coordinate:</label>
+        <input type="number" step="any" id="x" name="x" required>
+        <label for="y">Y Coordinate:</label>
+        <input type="number" step="any" id="y" name="y" required>
+        <label for="proximity_range">Proximity Range:</label>
+        <input type="number" step="any" id="proximity_range" name="proximity_range" required>
+        <label for="datetime">Date and Time:</label>
+        <input type="datetime-local" id="datetime" name="datetime" required>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if drivers %}
+        <h2>Nearby Drivers</h2>
+        <table style="border: 1px solid black; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid black;">Name</th>
+                    <th style="border: 1px solid black;">Email</th>
+                    <th style="border: 1px solid black;">Phone</th>
+                    <th style="border: 1px solid black;">Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for driver in drivers %}
+                <tr>
+                    <td style="border: 1px solid black;">{{ driver.name }}</td>
+                    <td style="border: 1px solid black;">{{ driver.email }}</td>
+                    <td style="border: 1px solid black;">{{ driver.phone }}</td>
+                    <td style="border: 1px solid black;">{{ driver.location }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
