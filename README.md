@@ -91,7 +91,11 @@ Prerequisites: Java 21, Node.js 22.12 or newer, PostgreSQL, and optionally [Olla
 
 1. **Database**
    ```sh
-   createdb vehicle_mapping        # user/password default to postgres/postgres
+   createdb vehicle_mapping
+   ```
+   Then tell the backend your PostgreSQL password (the user defaults to `postgres`):
+   ```sh
+   export DB_PASSWORD=your-postgres-password      # Windows: set DB_PASSWORD=your-postgres-password
    ```
 2. **LLM (optional but recommended)**
    ```sh
@@ -118,7 +122,8 @@ Demo driver logins (password `driver123`): `ravi@fleet.com`, `priya@fleet.com`, 
 | Variable | Default | Purpose |
 |----------|---------|---------|
 | `DB_URL` | `jdbc:postgresql://localhost:5432/vehicle_mapping` | JDBC URL |
-| `DB_USERNAME` / `DB_PASSWORD` | `postgres` / `postgres` | DB credentials |
+| `DB_USERNAME` | `postgres` | DB user |
+| `DB_PASSWORD` | *(empty)* | DB password. Set it unless your PostgreSQL uses trust auth. |
 | `SEED_DEMO_DATA` | `true` | Load demo data when the DB is empty |
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama server |
 | `OLLAMA_MODEL` | `llama3.2` | Model used by the assistant |
