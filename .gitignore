@@ -1,0 +1,18 @@
+# Backend
+backend/target/
+*.class
+*.log
+
+# Frontend (see also frontend/.gitignore)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# IDE / OS
+.idea/
+*.iml
+.DS_Store
+
+# Local environment overrides
+.env
+backend/src/main/resources/static/

@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:vdms;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+app:
+  seed-demo-data: true
+  ai:
+    enabled: true
+    base-url: http://localhost:1
+    model: test-model
+    timeout: 2s
+    max-tool-rounds: 3
