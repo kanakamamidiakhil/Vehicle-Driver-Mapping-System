@@ -1,0 +1,28 @@
+name: Deploy to Hugging Face Spaces
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_SPACE_NAME: ${{ vars.HF_SPACE_NAME }}
+    steps:
+      - name: Skip when HF_TOKEN is not configured
+        if: env.HF_TOKEN == ''
+        run: echo "::notice::Add a repository secret named HF_TOKEN (Hugging Face write token) to enable deployment."
+      - uses: actions/checkout@v4
+        if: env.HF_TOKEN != ''
+      - uses: actions/setup-python@v5
+        if: env.HF_TOKEN != ''
+        with:
+          python-version: "3.12"
+      - name: Publish Space
+        if: env.HF_TOKEN != ''
+        run: |
+          pip install --quiet huggingface_hub
+          python deploy/huggingface/push_space.py

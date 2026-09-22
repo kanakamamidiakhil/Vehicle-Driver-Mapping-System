@@ -85,6 +85,33 @@ To use another model, run for example `OLLAMA_MODEL=qwen2.5:7b docker compose up
 that supports tools will work. Bigger models such as `qwen2.5:7b` or `llama3.1:8b` follow the tools more
 reliably than the 3B default.
 
+## Free online deployment (Hugging Face Spaces)
+
+The whole stack runs in one container on a free Hugging Face Docker Space (2 vCPU, 16 GB RAM). The
+container holds PostgreSQL, Ollama with the open-source **Qwen 2.5 3B** model baked in, and Spring Boot,
+which also serves the Angular UI on port 7860. No paid service or external AI API is involved.
+
+One-time setup (about 5 minutes):
+
+1. Create a free account at https://huggingface.co/join.
+2. Create an access token at https://huggingface.co/settings/tokens and give it the **Write** role.
+3. In this GitHub repo, open **Settings → Secrets and variables → Actions → New repository secret**.
+   Name it `HF_TOKEN` and paste the token as its value.
+4. Open **Actions → Deploy to Hugging Face Spaces → Run workflow**. After that it redeploys on every
+   push to `main`.
+
+The workflow creates the Space `<your-hf-username>/vehicle-driver-mapping` and prints its URL. The first
+build takes about 10–15 minutes because it downloads the model; you can watch it in the Space's *Logs*
+tab. The app is then at `https://<your-hf-username>-vehicle-driver-mapping.hf.space`. To use a different
+Space name, set a repository variable `HF_SPACE_NAME`.
+
+Limits of the free tier:
+- The Space sleeps after about 48 hours without visitors, and the next visit wakes it (about a minute).
+- The database is reset to the demo data on every restart.
+- The LLM runs on CPU, so an AI answer takes roughly 20–60 seconds.
+
+The files are in `deploy/huggingface/`.
+
 ## Running locally (for development)
 
 Prerequisites: Java 21, Node.js 22.12 or newer, PostgreSQL, and optionally [Ollama](https://ollama.com/download).
