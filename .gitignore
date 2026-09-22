@@ -16,3 +16,4 @@ frontend/.angular/
 # Local environment overrides
 .env
 backend/src/main/resources/static/
+deploy/oracle/.env

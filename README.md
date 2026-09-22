@@ -85,32 +85,20 @@ To use another model, run for example `OLLAMA_MODEL=qwen2.5:7b docker compose up
 that supports tools will work. Bigger models such as `qwen2.5:7b` or `llama3.1:8b` follow the tools more
 reliably than the 3B default.
 
-## Free online deployment (Hugging Face Spaces)
+## Free online deployment (Oracle Cloud Always Free)
 
-The whole stack runs in one container on a free Hugging Face Docker Space (2 vCPU, 16 GB RAM). The
-container holds PostgreSQL, Ollama with the open-source **Qwen 2.5 3B** model baked in, and Spring Boot,
-which also serves the Angular UI on port 7860. No paid service or external AI API is involved.
+The whole stack, including the local LLM, runs on a free Oracle Cloud VM (Ampere A1, 4 CPU / 24 GB
+RAM). After creating the VM, one command installs and starts everything:
 
-One-time setup (about 5 minutes):
+```sh
+curl -fsSL https://raw.githubusercontent.com/kanakamamidiakhil/Vehicle-Driver-Mapping-System/main/deploy/oracle/setup.sh | bash
+```
 
-1. Create a free account at https://huggingface.co/join.
-2. Create an access token at https://huggingface.co/settings/tokens and give it the **Write** role.
-3. In this GitHub repo, open **Settings → Secrets and variables → Actions → New repository secret**.
-   Name it `HF_TOKEN` and paste the token as its value.
-4. Open **Actions → Deploy to Hugging Face Spaces → Run workflow**. After that it redeploys on every
-   push to `main`.
+Full step-by-step guide (account, VM, firewall, SSH):
+**[deploy/oracle/README.md](deploy/oracle/README.md)**.
 
-The workflow creates the Space `<your-hf-username>/vehicle-driver-mapping` and prints its URL. The first
-build takes about 10–15 minutes because it downloads the model; you can watch it in the Space's *Logs*
-tab. The app is then at `https://<your-hf-username>-vehicle-driver-mapping.hf.space`. To use a different
-Space name, set a repository variable `HF_SPACE_NAME`.
-
-Limits of the free tier:
-- The Space sleeps after about 48 hours without visitors, and the next visit wakes it (about a minute).
-- The database is reset to the demo data on every restart.
-- The LLM runs on CPU, so an AI answer takes roughly 20–60 seconds.
-
-The files are in `deploy/huggingface/`.
+A single-container build for Hugging Face Spaces is also in `deploy/huggingface/`. Hugging Face now
+requires a PRO subscription for Docker Spaces, so its workflow only runs when started manually.
 
 ## Running locally (for development)
 

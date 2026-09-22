@@ -1,8 +1,8 @@
 name: Deploy to Hugging Face Spaces
 
+# Manual only: Hugging Face now requires a PRO subscription for Docker Spaces.
+# The free deployment path is deploy/oracle (see README).
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -15,9 +15,9 @@ jobs:
       - name: Skip when HF_TOKEN is not configured
         if: env.HF_TOKEN == ''
         run: echo "::notice::Add a repository secret named HF_TOKEN (Hugging Face write token) to enable deployment."
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: env.HF_TOKEN != ''
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         if: env.HF_TOKEN != ''
         with:
           python-version: "3.12"
