@@ -1,0 +1,66 @@
+# Production stack for a single VM (e.g. Oracle Cloud Always Free, Ampere A1 4 OCPU / 24 GB).
+# Only the web UI (nginx, port 80) is published; nginx proxies /api to the backend. PostgreSQL and
+# Ollama are reachable only inside the Docker network. Started by setup.sh, which writes .env
+# (the generated database password, shared by postgres and backend via env_file).
+name: vdms
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    env_file: .env
+    environment:
+      POSTGRES_DB: vehicle_mapping
+      POSTGRES_USER: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d vehicle_mapping"]
+      interval: 5s
+      retries: 20
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    environment:
+      OLLAMA_KEEP_ALIVE: 24h
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
+
+  # Downloads the model into the ollama volume; quick no-op once it is present.
+  ollama-pull:
+    image: ollama/ollama:latest
+    depends_on:
+      - ollama
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    entrypoint: ["/bin/sh", "-c", "until ollama list > /dev/null 2>&1; do sleep 2; done; ollama pull ${OLLAMA_MODEL:-qwen2.5:3b}"]
+    restart: "no"
+
+  backend:
+    build: ../../backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/vehicle_mapping
+      DB_USERNAME: postgres
+      OLLAMA_BASE_URL: http://ollama:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:3b}
+      AI_TIMEOUT: 180s
+      SEED_DEMO_DATA: "true"
+      JAVA_TOOL_OPTIONS: -Xmx1g
+    restart: unless-stopped
+
+  frontend:
+    build: ../../frontend
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  ollama:
