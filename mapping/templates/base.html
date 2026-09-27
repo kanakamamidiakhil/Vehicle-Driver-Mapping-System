@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN PANEL</title>
+    <style>
+        /* Base CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+    
+</head>
+<body>
+    <header>
+        <h1>ADMIN PANEL</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'driver_list' %}">Drivers</a></li>
+                <li><a href="{% url 'vehicle_list' %}">Vehicles</a></li>
+                <li><a href="{% url 'assignment_list' %}">Assignments</a></li>
+                <li><a href="{% url 'create_driver' %}">Add Driver</a></li>
+                <li><a href="{% url 'create_vehicle' %}">Add Vehicle</a></li>
+                <li><a href="{% url 'create_assignment' %}">Assign Vehicle</a></li>
+                <li><a href="{% url 'search_drivers' %}">Search Drivers</a></li>
+                <li><a href="{% url 'assignments' %}">Search Driver Assignment</a></li>
+                <li><a href="{% url 'nearby_drivers' %}">Nearby Drivers</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

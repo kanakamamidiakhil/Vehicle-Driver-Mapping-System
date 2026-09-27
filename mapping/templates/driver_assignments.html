@@ -1,0 +1,38 @@
+{% extends 'base_driver.html' %}
+{% block content %}
+    <h2>Assignments for {{ driver.name }}</h2>
+    <table style="border: 1px solid black; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid black;">Vehicle</th>
+                <th style="border: 1px solid black;">Start Time</th>
+                <th style="border: 1px solid black;">End Time</th>
+                <th style="border: 1px solid black;">Status</th>
+                <th style="border: 1px solid black;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for assignment in assignments %}
+            <tr>
+                <td style="border: 1px solid black;">{{ assignment.vehicle.make_model }}</td>
+                <td style="border: 1px solid black;">{{ assignment.start_time }}</td>
+                <td style="border: 1px solid black;">{{ assignment.end_time }}</td>
+                <td style="border: 1px solid black;">{{ assignment.assignment_request_status }}</td>
+                <td style="border: 1px solid black;">
+                    {% if assignment.assignment_request_status == 'SENT' %}
+                        <form method="post" action="{% url 'accept_assignment' assignment.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Accept</button>
+                        </form>
+                        <form method="post" action="{% url 'reject_assignment' assignment.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Reject</button>
+                        </form>
+                    {% endif %}
+                </td>
+                <td style="border: 1px solid black;">{{ error }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

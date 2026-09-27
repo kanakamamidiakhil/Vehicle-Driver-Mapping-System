@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Search Driver</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="type">Search by:</label>
+        <select id="type" name="type" required>
+            <option value="name">Name</option>
+            <option value="phone">Phone</option>
+        </select>
+        <br>
+        <label for="search_term">Enter Value:</label>
+        <input type="text" id="search_term" name="search_term" required>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if drivers %}
+        <h2>Assignments</h2>
+        <table style="border: 1px solid black; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid black;">Driver's Name</th>
+                    <th style="border: 1px solid black;">Driver's Phone</th>
+                    <th style="border: 1px solid black;">Driver's email</th>
+                    <th style="border: 1px solid black;">Driver's Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for driver in drivers %}
+                <tr>
+                    <td style="border: 1px solid black;">{{ driver.name }}</td>
+                    <td style="border: 1px solid black;">{{ driver.phone }}</td>
+                    <td style="border: 1px solid black;">{{ driver.email }}</td>
+                    <td style="border: 1px solid black;">{{ driver.location }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
